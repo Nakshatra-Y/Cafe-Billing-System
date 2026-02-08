@@ -51,5 +51,4 @@ The system also supports bill editing, order completion, and data management usi
 
 ---
 
-## 📂 Project Structure
 
