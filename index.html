@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Café Billing App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header with navigation -->
+    <header class="header">
+      <h1>☕ <span class="brand-name"></span>Cafe Bucks</span></h1>
+      <nav class="nav-buttons">
+        <button class="nav-btn active" data-section="create">
+          Create Bill
+        </button>
+        <button class="nav-btn" data-section="pending">Pending Bills</button>
+        <button class="nav-btn" data-section="completed">
+          Completed Bills
+        </button>
+        <button class="nav-btn" data-section="manage">Manage Menu</button>
+        <button class="nav-btn" data-section="data">Data & Backup</button>
+      </nav>
+    </header>
+
+    <!-- Section 1: Create Bill -->
+    <section id="create-section" class="section active">
+      <h2>Create New Bill</h2>
+
+      <!-- Table Number -->
+      <div class="menu-section">
+        <h3>Table Number</h3>
+        <select id="table-select" class="table-select">
+          <option value="">Select Table</option>
+        </select>
+      </div>
+
+      <!-- Step 1: Select Category -->
+      <div class="menu-section">
+        <h3>Choose Category</h3>
+        <div class="category-buttons" id="category-buttons">
+          <!-- Category buttons loaded by JavaScript from menu -->
+        </div>
+      </div>
+
+      <!-- Step 2: Add Items from Menu -->
+      <div class="menu-section">
+        <h3>Add Items to Bill</h3>
+        <div class="menu-items" id="menu-items">
+          <!-- Menu items will be loaded here by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Current Bill Summary -->
+      <div class="bill-section">
+        <h3>Current Bill</h3>
+        <div class="bill-items" id="bill-items">
+          <p class="empty-message">
+            No items added yet. Select a category and add items above.
+          </p>
+        </div>
+        <div class="bill-total">
+          <strong>Total: ₹<span id="total-amount">0</span></strong>
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="save-bill-btn">
+            Save Bill
+          </button>
+          <button class="btn btn-secondary" id="clear-bill-btn">
+            Clear Bill
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Pending Bills List -->
+    <section id="pending-section" class="section">
+      <h2>Pending Bills</h2>
+      <input type="text" id="pending-search-input" class="form-input search-input"
+        placeholder="Search by Bill ID or Table number" />
+      <div class="pending-list" id="pending-list">
+        <!-- Pending bills will be loaded here by JavaScript -->
+        <p class="empty-message">No pending bills.</p>
+      </div>
+    </section>
+
+    <!-- Section 5: Manage Menu -->
+    <section id="manage-section" class="section">
+      <h2>Manage Menu</h2>
+
+      <!-- Add Category -->
+      <div class="menu-section">
+        <h3>Add Category</h3>
+        <div class="add-form">
+          <input type="text" id="new-category-input" placeholder="Category name (e.g. Coffee)" class="form-input" />
+          <button class="btn btn-primary" id="add-category-btn">
+            Add Category
+          </button>
+        </div>
+      </div>
+
+      <!-- Add Product -->
+      <div class="menu-section">
+        <h3>Add Product</h3>
+        <div class="add-form add-form-column">
+          <select id="product-category-select" class="form-input">
+            <option value="">Select category first</option>
+          </select>
+          <input type="text" id="new-product-name" placeholder="Product name" class="form-input" />
+          <input type="number" id="new-product-price" placeholder="Price (₹)" class="form-input" min="1" />
+          <button class="btn btn-primary" id="add-product-btn">
+            Add Product
+          </button>
+        </div>
+      </div>
+
+      <!-- Add Table Number -->
+      <div class="menu-section">
+        <h3>Add Table Number</h3>
+        <div class="add-form">
+          <input type="text" id="new-table-input" placeholder="Table number (e.g. 5 or Table 5)" class="form-input" />
+          <button class="btn btn-primary" id="add-table-btn">
+            Add Table
+          </button>
+        </div>
+      </div>
+
+      <!-- Current Menu Display -->
+      <div class="menu-section">
+        <h3>Current Menu</h3>
+        <div id="manage-menu-display">
+          <!-- Categories and products listed here by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Data & Backup -->
+    <section id="data-section" class="section">
+      <h2>Data & Backup</h2>
+
+      <!-- Backup & Restore -->
+      <div class="menu-section">
+        <h3>Backup & Restore</h3>
+        <p class="help-text">
+          Save a full backup of your data to your computer, or restore from a
+          file.
+        </p>
+        <div class="add-form">
+          <button class="btn btn-primary" id="backup-btn">
+            Download Backup (JSON)
+          </button>
+          <div style="position: relative; overflow: hidden; display: inline-block;">
+            <button class="btn btn-secondary">Restore from File</button>
+            <input type="file" id="restore-file-input" accept=".json"
+              style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Clear Old Bills -->
+      <div class="menu-section">
+        <h3>Clear Old Bills</h3>
+        <p class="help-text">
+          Delete bills older than a certain number of days.
+        </p>
+        <div class="add-form">
+          <input type="number" id="clear-days-input" class="form-input" placeholder="Days (e.g. 30)" min="1"
+            value="30" />
+          <button class="btn btn-secondary" id="clear-old-bills-btn">
+            Clear Old Bills
+          </button>
+        </div>
+      </div>
+
+      <!-- Export to Excel (CSV) -->
+      <div class="menu-section">
+        <h3>Export Bills to Excel</h3>
+        <p class="help-text">Export bills as CSV file (opens in Excel).</p>
+        <button class="btn btn-primary" id="export-csv-btn">
+          Export Bills (CSV)
+        </button>
+      </div>
+
+      <!-- Reset Bills -->
+      <div class="menu-section">
+        <h3>Reset Bills</h3>
+        <p class="help-text">
+          Delete all bills. Menu and table settings will be kept.
+        </p>
+        <button class="btn btn-danger" id="reset-app-btn">
+          Delete All Bills
+        </button>
+      </div>
+    </section>
+
+    <!-- Section 3: Completed Bills List -->
+    <section id="completed-section" class="section">
+      <h2>Completed Bills</h2>
+      <input type="text" id="completed-search-input" class="form-input search-input"
+        placeholder="Search by Bill ID or Table number" />
+      <div class="pending-list" id="completed-list">
+        <p class="empty-message">No completed bills yet.</p>
+      </div>
+    </section>
+
+    <!-- Section 4: Bill Details (shown when viewing a specific bill) -->
+    <section id="bill-detail-section" class="section">
+      <h2>Bill Details</h2>
+      <div class="bill-detail-content" id="bill-detail-content">
+        <!-- Bill details will be loaded here -->
+      </div>
+      <!-- Add more items (only shown for PENDING bills) -->
+      <div id="bill-detail-add-items" class="bill-detail-add-items" style="display: none">
+        <h3>Add More Items</h3>
+        <div class="menu-section">
+          <h4>Choose Category</h4>
+          <div class="category-buttons" id="bill-detail-category-buttons">
+            <!-- Loaded by JavaScript -->
+          </div>
+        </div>
+        <div class="menu-section">
+          <h4>Add to Bill</h4>
+          <div class="menu-items" id="bill-detail-menu-items">
+            <p class="empty-message">Select a category to add items.</p>
+          </div>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-primary" id="complete-bill-btn">
+          Complete Bill
+        </button>
+        <button class="btn btn-danger" id="cancel-bill-btn" style="display: none">
+          Cancel Bill
+        </button>
+        <button class="btn btn-secondary" id="back-to-pending-btn">
+          Back to Pending Bills
+        </button>
+      </div>
+    </section>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
